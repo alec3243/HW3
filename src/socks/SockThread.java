@@ -3,16 +3,17 @@ package socks;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Phaser;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SockThread extends Thread {
 	private List<Sock> socks;
 	private MatchingThread parent;
-	private CountDownLatch latch;
+	private Phaser phaser;
 
-	public SockThread(MatchingThread parent, CountDownLatch latch) {
+	public SockThread(MatchingThread parent, Phaser phaser) {
 		this.parent = parent;
-		this.latch = latch;
+		this.phaser = phaser;
 	}
 
 	@Override
@@ -53,7 +54,6 @@ public class SockThread extends Thread {
 		System.out.printf("SockThread-%s produced %d orange socks%n", Thread
 				.currentThread().getName().charAt(7), oranges);
 		parent.accept(socks);
-
-		latch.countDown();
+		phaser.arrive();
 	}
 }

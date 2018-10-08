@@ -3,6 +3,7 @@ package socks;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Phaser;
 
 public class MatchingThread extends Thread {
 
@@ -17,19 +18,15 @@ public class MatchingThread extends Thread {
 	public void run() {
 		final int THREAD_COUNT = 4;
 		socks = new ArrayList<>();
-		CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
+		Phaser phaser = new Phaser(THREAD_COUNT + 1);
 		for (int i = 0; i < THREAD_COUNT; i++) {
-			(new SockThread(this, latch)).start();
+			(new SockThread(this, phaser)).start();
 		}
-		try {
-			latch.await();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		providePair();
+		phaser.arriveAndAwaitAdvance();
+		providePairs();
 	}
 
-	private void providePair() {
+	private void providePairs() {
 		Sock sock1 = socks.get(0);
 		Sock sock2 = null;
 		for (int i = 1; i < socks.size(); i++) {
