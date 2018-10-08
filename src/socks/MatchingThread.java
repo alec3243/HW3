@@ -2,7 +2,6 @@ package socks;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Phaser;
 
 public class MatchingThread extends Thread {
