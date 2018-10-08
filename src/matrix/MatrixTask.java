@@ -20,28 +20,30 @@ public class MatrixTask implements Runnable {
 
 	@Override
 	public void run() {
+		// Calculate the value for a single cell in the product matrix C
 		float sum = 0.0f;
 		for (int i = 0; i < matrixB.length; i++) {
 			sum += matrixA[row][i] * matrixB[i][col];
 		}
 		matrixC[row][col] = sum;
-		// for (int i = 1; i < matrixA.length; i++) {
-		// for (int j = 1; j < matrixB[0].length; j++) {
-		// float sum = 0.0f;
-		// for (int k = 1; k < matrixA[0].length; k++) {
-		// sum += matrixA[i][k] * matrixB[k][j];
-		// }
-		// matrixC[i][j] = sum;
-		// }
-		// }
 	}
 
+	/**
+	 * Generates a matrix of size rows x cols with each value being a random
+	 * float value between 0.0 and 10.0
+	 * 
+	 * @param rows
+	 *            Number of rows to generate
+	 * @param cols
+	 *            Number of columns to generate
+	 * @return Randomly generated matrix with specified size
+	 */
 	public static float[][] generateMatrix(int rows, int cols) {
 		float[][] matrix = new float[rows][cols];
 		Random rand = new Random();
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				matrix[i][j] = rand.nextFloat() % 10.0f;
+				matrix[i][j] = rand.nextFloat() * 10.0f;
 			}
 		}
 		return matrix;
